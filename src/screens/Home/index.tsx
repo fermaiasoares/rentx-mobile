@@ -9,8 +9,8 @@ import Logo from '../../assets/logo.svg';
 
 import { Car, CarData } from '../../components/Car';
 
-export function Home(){
-  const navigation = useNavigation();
+export function Home() {
+  const { navigate } = useNavigation();
 
   const carData: CarData[] = [
     {
@@ -26,8 +26,7 @@ export function Home(){
   ];
 
   function handleCarDetails() {
-    navigation.navigate('CarDetails');
-    console.log('Clicou');
+    navigate('CarDetails');
   }
 
   return (
@@ -54,7 +53,7 @@ export function Home(){
         data={carData}
         keyExtractor={car => car.id}
         renderItem={({ item }) => 
-          <Car 
+          <Car
             data={item} 
             onPress={handleCarDetails}
           />
