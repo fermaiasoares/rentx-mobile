@@ -14,21 +14,11 @@ import {
   Type 
 } from './styles';
 
-import Gasoline from '../../assets/gasoline.svg';
-
-export interface CarData {
-  id: string;
-  brand: string;
-  name: string;
-  rent: {
-    period: string;
-    price: number;
-  },
-  thumbnail: string;
-}
+import { CarDTO } from '../../dtos/CarDTO';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 interface Props extends RectButtonProps {
-  data: CarData;
+  data: CarDTO;
 }
 
 export function Car({ data, ...rest }: Props) {
@@ -36,6 +26,8 @@ export function Car({ data, ...rest }: Props) {
     style: 'currency',
     currency: 'BRL',
   }).replace(/^(\D+)/, '$1 ');
+
+  const MotorIcon = getAccessoryIcon(data.fuel_type);
 
   return (
     <Container {...rest}>
@@ -50,7 +42,7 @@ export function Car({ data, ...rest }: Props) {
           </Rent>
 
           <Type>
-            <Gasoline />
+            <MotorIcon />
           </Type>
         </About>
       </Details>

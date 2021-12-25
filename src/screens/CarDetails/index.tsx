@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { 
   About,
@@ -17,80 +18,83 @@ import {
   Price, 
 } from './styles';
 
+import { CarDTO } from '../../dtos/CarDTO';
+
 import { BackButton } from '../../components/BackButton';
+import { Button } from '../../components/Button';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
 
-import Speed from '../../assets/speed.svg';
-import Gasoline from '../../assets/gasoline.svg';
-import { Button } from '../../components/Button';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
-export function CarDetails(){
-  const accessories = [
-    {
-      name: 'Automático',
-      icon: Speed
-    },
-    {
-      name: 'Gasoline',
-      icon: Gasoline
-    },
-    {
-      name: 'Pessoas',
-      icon: Gasoline
-    },
-    {
-      name: 'Automático',
-      icon: Speed
-    },
-    {
-      name: 'Gasoline',
-      icon: Gasoline
-    },
-    {
-      name: 'Pessoas',
-      icon: Gasoline
-    },
-  ]
+interface Params {
+  car: CarDTO
+}
+
+export function CarDetails() {
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const { car } = route.params as Params;
+
+  function handleBack() {
+    navigation.goBack();
+  }
+
+  function handleConfirmRental() {
+    navigation.navigate('Scheduling', { car });
+  }
 
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => {}}/>
+        <BackButton onPress={handleBack}/>
       </Header>
 
       <CarImages>
         <ImageSlider
-          imagesUrls={['https://cdn.picpng.com/audi/small/audi-face-28582.png']} 
+          imagesUrls={car.photos} 
         />
       </CarImages>
 
       <Content>
         <Details>
           <Description>
-            <Brand>Audi</Brand>
-            <Name>RS 5 Coupé</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 580,00</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>{car.rent.price.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            }).replace(/^(\D+)/, '$1 ')}</Price>
           </Rent>
         </Details>
 
         <Acessories>
-          { accessories.map(accessory => <Accessory name={accessory.name} icon={accessory.icon} />) }
+          { 
+            car.accessories.map(accessory => 
+              <Accessory
+                key={accessory.type}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            ) 
+          }
         </Acessories>
 
         <About>
-          Este é automóvel desportivo. 
-          Surgiu do lendário touro de lide indultado na praça Real Maestranza de Sevilla. 
-          É um belíssimo carro para quem gosta de acelerar.
+          {car.about}
         </About>
       </Content>
 
       <Footer>
-        <Button title='Escolher período de aluguel' />
+        <Button 
+          title='Escolher período de aluguel'
+          onPress={handleConfirmRental}
+        />
       </Footer>
     </Container>
   );
