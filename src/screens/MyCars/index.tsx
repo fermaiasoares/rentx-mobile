@@ -5,6 +5,8 @@ import { useTheme } from 'styled-components';
 
 import { CarDTO } from '../../dtos/CarDTO';
 import { api } from '../../services/api';
+import { getPlatformDate } from '../../utils/getPlatformDate';
+import { format } from '../../components/Calendar';
 
 import { 
   Appointments, 
@@ -33,6 +35,8 @@ export interface CarProps {
   car: CarDTO;
   user_id: number;
   id: number;
+  start: string;
+  end: string;
 }
 
 export function MyCars() {
@@ -55,7 +59,6 @@ export function MyCars() {
         Alert.alert('Erro', 'Erro ao listar seu carros.');
       } finally {
         setLoading(false);
-        console.log(cars);
       }
     }
 
@@ -83,7 +86,7 @@ export function MyCars() {
       <Content>
         <Appointments>
            <AppointmentsTitle>Agendamentos feitos</AppointmentsTitle>
-           <AppointmentsQuantity>05</AppointmentsQuantity>
+           <AppointmentsQuantity>{cars.length}</AppointmentsQuantity>
         </Appointments>
 
         { loading ? <Load /> : 
@@ -96,9 +99,9 @@ export function MyCars() {
                 <CarFooter>
                   <CarFooterTitle>Período</CarFooterTitle>
                   <CarFooterPeriod>
-                    <CarFooterDate>25/12/2021</CarFooterDate>
+                    <CarFooterDate>{format(getPlatformDate(new Date(item.start)), 'dd/MM/yyyy')}</CarFooterDate>
                     <ArrowSvg color={theme.colors.text.default}/>
-                    <CarFooterDate>31/12/2021</CarFooterDate>
+                    <CarFooterDate>{format(getPlatformDate(new Date(item.end)), 'dd/MM/yyyy')}</CarFooterDate>
                   </CarFooterPeriod>
                 </CarFooter>
               </CarWrapper>

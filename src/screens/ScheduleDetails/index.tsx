@@ -47,13 +47,14 @@ interface Params {
   dates: string[];
 }
 
-interface RentalPeriod {
+interface IRentalPeriod {
   start: string;
   end: string;
 }
 
 export function ScheduleDetails() {
-  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
+  const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>({} as IRentalPeriod);
+  const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const navigation = useNavigation();
@@ -68,6 +69,7 @@ export function ScheduleDetails() {
   }
 
   async function handleRentalConfirmation() {
+    setLoading(true);
     const schedulesByCars = await api.get(`/schedules_bycars/${car.id}`);
 
     const unavailable_dates = [
@@ -78,6 +80,8 @@ export function ScheduleDetails() {
     await api.post('schedules_byuser', {
       user_id: 1,
       car,
+      start: dates[0],
+      end:  dates[dates.length - 1],
     });
 
     api.put(`/schedules_bycars/${car.id}`, {
@@ -88,7 +92,7 @@ export function ScheduleDetails() {
     }).catch((error) => {
       console.log(error);
       Alert.alert('Erro ao reservar o carro', 'Não foi possível realizar a reserva. Tente novamente mais tarde.');
-    })
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -176,6 +180,8 @@ export function ScheduleDetails() {
           title='Alugar agora' 
           color={theme.colors.main.success}
           onPress={handleRentalConfirmation}
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>

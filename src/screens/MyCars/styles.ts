@@ -78,8 +78,8 @@ export const CarFooter = styled.View`
   align-items: center;
   justify-content: space-between;
 
-  border-top-width: ${RFValue(1)}px;
-  border-top-color: ${({theme}) => theme.colors.line};
+  border-top-width: ${RFValue(4)}px;
+  border-top-color: ${({theme}) => theme.colors.background.primary};
   padding: ${RFValue(16)}px ${RFValue(24)}px;
 `;
 

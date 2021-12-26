@@ -2,10 +2,14 @@
   "expo": {
     "name": "rentx",
     "slug": "rentx",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#1b1b1f"
+    }
   },
   "name": "rentx"
 }

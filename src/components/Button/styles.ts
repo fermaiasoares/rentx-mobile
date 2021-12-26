@@ -11,7 +11,7 @@ export const Container = styled(RectButton)<ButtonProps>`
   padding: ${RFValue(19)}px;
   align-items: center;
   justify-content: center;
-
+  opacity: ${({enabled}) => enabled ? 1 : 0.5};
   background-color: ${({ color, theme }) => color ? color : theme.colors.main.default};
 `;
 
