@@ -27,7 +27,7 @@ import {
 
 import { BackButton } from '../../components/BackButton';
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -89,7 +89,7 @@ export function MyCars() {
            <AppointmentsQuantity>{cars.length}</AppointmentsQuantity>
         </Appointments>
 
-        { loading ? <Load /> : 
+        { loading ? <LoadAnimation /> : 
           <AppointmentsList 
             data={cars}
             keyExtractor={item => String(item.id)}

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
-
+import { useTheme } from 'styled-components';
 import Animated, {
   useAnimatedStyle,
   useAnimatedGestureHandler,
@@ -25,8 +25,7 @@ import {
 import Logo from '../../assets/logo.svg';
 
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
-import { useTheme } from 'styled-components';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import { CarDTO } from '../../dtos/CarDTO';
 import { api } from '../../services/api';
@@ -117,7 +116,7 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      { loading ? <Load /> : 
+      { loading ? <LoadAnimation /> : 
         <CarList
           data={cars}
           keyExtractor={ item => item.id}
