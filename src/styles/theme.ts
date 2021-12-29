@@ -15,7 +15,7 @@ export default {
     text: {
       default: '#7a7a80',
       detail: '#aeaeb3',
-      title: '#47474d',
+      title: '#41414d',
     },
     line: '#ebebf0',
     main: {
