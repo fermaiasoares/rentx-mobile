@@ -1,17 +1,36 @@
 import React from 'react';
 import { StatusBar, useWindowDimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Button, ButtonText, Container, Content, Footer, ScheduleInfoText, ScheduleInfoTitle } from './styles';
+import { 
+  Button, 
+  ButtonText, 
+  Container, 
+  Content, 
+  Footer,
+  InfoText,
+  InfoTitle
+} from './styles';
 
 import Brand from '../../assets/logo_background_gray.svg';
 import Done from '../../assets/done.svg';
 
-export function ScheduleConfirmation() {
+import { RootStackParamList } from '../../routes/paramList';
+
+interface Params {
+  title: string;
+  message: string;
+  nextScreenRoute?: keyof RootStackParamList;
+}
+
+export function Confirmation() {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const { title, message, nextScreenRoute } = route.params as Params;
 
   function handleToHome() {
-    navigation.navigate('Home');
+    navigation.navigate(nextScreenRoute);
   }
 
   return (
@@ -26,12 +45,8 @@ export function ScheduleConfirmation() {
 
       <Content>
         <Done />
-        <ScheduleInfoTitle>Carro alugado!</ScheduleInfoTitle>
-        <ScheduleInfoText>
-          Agora você só precisa ir {'\n'}
-          até a concessionária da RENTX {'\n'}
-          pegar o seu automóvel.
-        </ScheduleInfoText>
+        <InfoTitle>{title}</InfoTitle>
+        <InfoText>{message}</InfoText>
       </Content>
 
       <Footer>

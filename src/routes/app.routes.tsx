@@ -5,7 +5,7 @@ import { Home } from '../screens/Home';
 import { CarDetails } from '../screens/CarDetails';
 import { Scheduling } from '../screens/Scheduling';
 import { ScheduleDetails } from '../screens/ScheduleDetails';
-import { ScheduleConfirmation } from '../screens/ScheduleConfirmation';
+import { Confirmation } from '../screens/Confirmation';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
 import { SignIn } from '../screens/SignIn';
@@ -30,7 +30,7 @@ export function AppRoutes() {
       <Screen name='CarDetails' component={CarDetails} />
       <Screen name='Scheduling' component={Scheduling} />
       <Screen name='ScheduleDetails' component={ScheduleDetails} />
-      <Screen name='ScheduleConfirmation' component={ScheduleConfirmation} />
+      <Screen name='Confirmation' component={Confirmation} />
       <Screen name='MyCars' component={MyCars} />
       <Screen name='Splash' component={Splash} />
       <Screen name='SignIn' component={SignIn} />

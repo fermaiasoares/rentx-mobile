@@ -11,19 +11,24 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.View`
-  flex: 1;
+  width: 100%;
+  margin-top: ${getStatusBarHeight() + RFValue(46)}px;
   align-items: center;
   justify-content: space-between;
   padding-bottom: ${RFValue(80)}px;
+  position: absolute;
+  top: ${getStatusBarHeight() + RFValue(200)}px;
 `;
 
-export const ScheduleInfoTitle = styled.Text`
+export const InfoTitle = styled.Text`
+  margin-top: ${RFValue(32)}px;
   font-size: ${RFValue(30)}px;
   font-family: ${({ theme }) => theme.fonts.secondary_600};
   color: ${({ theme }) => theme.colors.shape.default};
 `;
 
-export const ScheduleInfoText = styled.Text`
+export const InfoText = styled.Text`
+  margin-top: ${RFValue(20)}px;
   font-size: ${RFValue(15)}px;
   line-height: ${RFValue(25)}px;
   font-family: ${({ theme }) => theme.fonts.primary_400};
@@ -48,4 +53,7 @@ export const ButtonText = styled.Text`
 export const Footer = styled.View`
   align-items: center;
   justify-content: center;
+  position: absolute;
+  width: 100%;
+  bottom: ${getBottomSpace() + RFValue(64)}px;
 `;

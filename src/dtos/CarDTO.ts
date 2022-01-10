@@ -1,3 +1,4 @@
+import { RootStackParamList } from '../routes/paramList';
 interface Rent {
   period: string;
   price: number;
@@ -26,4 +27,10 @@ export interface UserDTO {
   driverLicense: string;
   password?: string;
   password_confirmation?: string;
+}
+
+export interface ConfirmationDTO {
+  title: string;
+  message: string;
+  nextScreenRoute?: keyof RootStackParamList;
 }

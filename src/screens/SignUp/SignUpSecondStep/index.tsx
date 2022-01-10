@@ -53,7 +53,11 @@ export function SignUpSecondStep() {
         abortEarly: false,
       });
 
-      //TODO: Enviar dados para o backend
+      navigation.navigate('Confirmation', {
+        title: 'Conta Criada!',
+        message: `Agora é só fazer login\ne aproveitar.`,
+        nextScreenRoute: 'SignIn',
+      });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Ops!', error.errors.join('\n'));

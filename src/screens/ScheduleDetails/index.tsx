@@ -88,7 +88,11 @@ export function ScheduleDetails() {
       id: car.id,
       unavailable_dates,
     }).then(() => {
-      navigation.navigate('ScheduleConfirmation');
+      navigation.navigate('Confirmation', {
+        title: 'Carro alugado!',
+        message: `Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automóvel.`,
+        nextScreenRoute: 'Home'
+      });
     }).catch((error) => {
       console.log(error);
       Alert.alert('Erro ao reservar o carro', 'Não foi possível realizar a reserva. Tente novamente mais tarde.');

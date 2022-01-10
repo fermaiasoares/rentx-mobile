@@ -1,12 +1,13 @@
-import { CarDTO, UserDTO } from '../dtos/CarDTO';
+import { CarDTO, ConfirmationDTO, UserDTO } from '../dtos/CarDTO';
 
 export type RootStackParamList = {
   Home: undefined;
   CarDetails: { car: CarDTO };
   Scheduling: { car: CarDTO };
   ScheduleDetails: { car: CarDTO, dates: string[] };
-  ScheduleConfirmation: undefined;
+  Confirmation: ConfirmationDTO;
   MyCars: undefined;
+  SignIn: undefined;
   SignUpFirstStep: undefined;
   SignUpSecondStep: { user: UserDTO};
 }
