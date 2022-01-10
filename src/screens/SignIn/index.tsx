@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -15,9 +16,14 @@ import { Input } from '../../components/Input';
 
 export function SignIn() {
   const theme = useTheme();
+  const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  function handleNewAccount() {
+    navigation.navigate('SignUpFirstStep');
+  }
 
   async function handleSignIn() {
     const schema = Yup.object().shape({
@@ -99,7 +105,7 @@ export function SignIn() {
 
           <Button
             title="Criar conta gratuita"
-            onPress={() => {}}
+            onPress={handleNewAccount}
             color={theme.colors.background.secondary}
             enabled
             light

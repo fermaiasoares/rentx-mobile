@@ -19,3 +19,11 @@ export interface CarDTO {
   accessories: Accessory[];
   photos: string[];
 }
+
+export interface UserDTO {
+  name: string;
+  email: string;
+  driverLicense: string;
+  password?: string;
+  password_confirmation?: string;
+}
