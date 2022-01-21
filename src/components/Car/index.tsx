@@ -22,7 +22,7 @@ interface Props extends RectButtonProps {
 }
 
 export function Car({ data, ...rest }: Props) {
-  const priceFormatted = data.rent.price.toLocaleString('pt-BR', {
+  const priceFormatted = data.price.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).replace(/^(\D+)/, '$1 ');
@@ -37,7 +37,7 @@ export function Car({ data, ...rest }: Props) {
 
         <About>
           <Rent>
-            <Period>{data.rent.period}</Period>
+            <Period>{data.period}</Period>
             <Price>{priceFormatted}</Price>
           </Rent>
 

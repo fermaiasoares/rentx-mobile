@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar, StyleSheet, BackHandler } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Alert, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import Animated, {
   useAnimatedStyle,
-  useAnimatedGestureHandler,
   useSharedValue,
-  withSpring,
 } from 'react-native-reanimated';
 
-const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
+// const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
 
 import { 
   CarList, 
@@ -40,20 +36,20 @@ export function Home() {
   const positionX = useSharedValue(0);
   const positionY = useSharedValue(0);
 
-  const onGestureEvent = useAnimatedGestureHandler({
-    onStart: (_, ctx: any) => {
-      ctx.positionX = positionX.value;
-      ctx.positionY = positionY.value;
-    },
-    onActive: (event, ctx: any) => {
-      positionX.value = ctx.positionX + event.translationX;
-      positionY.value = ctx.positionY + event.translationY;
-    },
-    onEnd: () => {
-      positionX.value = withSpring(0);
-      positionY.value = withSpring(0);
-    }
-  });
+  // const onGestureEvent = useAnimatedGestureHandler({
+  //   onStart: (_, ctx: any) => {
+  //     ctx.positionX = positionX.value;
+  //     ctx.positionY = positionY.value;
+  //   },
+  //   onActive: (event, ctx: any) => {
+  //     positionX.value = ctx.positionX + event.translationX;
+  //     positionY.value = ctx.positionY + event.translationY;
+  //   },
+  //   onEnd: () => {
+  //     positionX.value = withSpring(0);
+  //     positionY.value = withSpring(0);
+  //   }
+  // });
 
   const myCarButtonAnimationStyle = useAnimatedStyle(() => {
     return {
@@ -88,12 +84,6 @@ export function Home() {
     fetchCars();
   }, [])
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      return true;
-    });
-  }, []);
-
   return (
     <Container>
       <StatusBar 
@@ -127,7 +117,7 @@ export function Home() {
         />
       }
 
-      <PanGestureHandler
+      {/* <PanGestureHandler
         onGestureEvent={onGestureEvent}
       >
         <Animated.View
@@ -149,21 +139,21 @@ export function Home() {
               />
           </ButtonAnimated>
         </Animated.View>
-      </PanGestureHandler>
+      </PanGestureHandler> */}
     </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  myCarButton: {
-    position: 'absolute',
-    bottom: RFValue(20),
-    right: RFValue(20),
-    width: RFValue(60),
-    height: RFValue(60),
-    borderRadius: RFValue(30),
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-  }
-})
+// const styles = StyleSheet.create({
+//   myCarButton: {
+//     position: 'absolute',
+//     bottom: RFValue(20),
+//     right: RFValue(20),
+//     width: RFValue(60),
+//     height: RFValue(60),
+//     borderRadius: RFValue(30),
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     elevation: 5,
+//   }
+// })

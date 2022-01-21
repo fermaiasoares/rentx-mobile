@@ -125,8 +125,8 @@ export function CarDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>{car.rent.price.toLocaleString('pt-BR', {
+            <Period>{car.period}</Period>
+            <Price>{car.price.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL'
             }).replace(/^(\D+)/, '$1 ')}</Price>
@@ -137,7 +137,7 @@ export function CarDetails() {
           { 
             car.accessories.map(accessory => 
               <Accessory
-                key={accessory.type}
+                key={accessory.id}
                 name={accessory.name}
                 icon={getAccessoryIcon(accessory.type)}
               />

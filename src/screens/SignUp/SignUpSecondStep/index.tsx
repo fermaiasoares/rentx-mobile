@@ -18,6 +18,7 @@ import { Input } from '../../../components/Input/index';
 
 import { UserDTO } from '../../../dtos/CarDTO';
 import * as Yup from 'yup';
+import { api } from '../../../services/api';
 
 interface Params {
   user: UserDTO;
@@ -53,6 +54,13 @@ export function SignUpSecondStep() {
         abortEarly: false,
       });
 
+      await api.post('/users', {
+        name: user.name,
+        email: user.email,
+        driver_license: user.driverLicense,
+        password
+      });
+
       navigation.navigate('Confirmation', {
         title: 'Conta Criada!',
         message: `Agora é só fazer login\ne aproveitar.`,
@@ -61,7 +69,10 @@ export function SignUpSecondStep() {
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Ops!', error.errors.join('\n'));
+        return;
       }
+
+      Alert.alert('Ops!', 'Ocorreu um erro ao criar sua conta, tente novamente.');
     }
   }
 

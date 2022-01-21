@@ -1,7 +1,6 @@
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import { useFonts } from 'expo-font';
 import {
   Archivo_400Regular,
@@ -14,9 +13,8 @@ import {
 } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 
-import theme from './src/styles/theme';
-
 import { Routes } from './src/routes';
+import { AppProvider } from './src/hooks/index';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -33,8 +31,8 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <AppProvider>
       <Routes />
-    </ThemeProvider>
+    </AppProvider>
   );
 }

@@ -62,7 +62,7 @@ export function ScheduleDetails() {
 
   const { car, dates } = route.params as Params;
 
-  const rentTotal = car.rent.price * dates.length;
+  const rentTotal = car.price * dates.length;
 
   function handleBack() {
     navigation.goBack();
@@ -126,8 +126,8 @@ export function ScheduleDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>{car.rent.price.toLocaleString('pt-BR', {
+            <Period>{car.period}</Period>
+            <Price>{car.price.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL'
             }).replace(/(\D+)/, '$1 ')}</Price>
@@ -137,7 +137,7 @@ export function ScheduleDetails() {
         <Acessories>
           { car.accessories.map(accessory => 
             <Accessory
-              key={accessory.type}
+              key={accessory.id}
               name={accessory.name} 
               icon={getAccessoryIcon(accessory.type)}
             /> 
@@ -163,7 +163,7 @@ export function ScheduleDetails() {
           <RentalPriceLable>Total</RentalPriceLable>
           <RentalPriceDetails>
             <RentalPriceQuota>
-              {car.rent.price.toLocaleString('pt-BR', {
+              {car.price.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
               }).replace(/(\D+)/, '$1 ')} x {dates.length} diárias
