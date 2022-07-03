@@ -69,19 +69,23 @@ export function Home() {
   }
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchCars() {
       try {
         const responseData = await api.get<CarDTO[]>('/cars');
-        setCars(responseData.data);
+        if (isMounted) setCars(responseData.data);
       } catch (error) {
         Alert.alert('Erro', 'Erro ao buscar carros');
         console.log(error);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
     fetchCars();
+    return () => {
+      isMounted = false
+    };
   }, [])
 
   return (

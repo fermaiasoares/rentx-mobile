@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   KeyboardAvoidingView,
@@ -16,6 +16,8 @@ import { Input } from '../../components/Input';
 
 import { useAuth } from '../../hooks/auth';
 
+import { database } from '../../database';
+
 export function SignIn() {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -23,6 +25,16 @@ export function SignIn() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    async function loadData() {
+      const userCollection = database.get('users');
+      const users = await userCollection.query().fetch();
+      console.log(users);
+    }
+
+    loadData();
+  }, [])
 
   function handleNewAccount() {
     navigation.navigate('SignUpFirstStep');
