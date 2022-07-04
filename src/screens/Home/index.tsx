@@ -32,7 +32,7 @@ export function Home() {
   
   const navigation = useNavigation();
   const theme = useTheme();
-  
+
   const positionX = useSharedValue(0);
   const positionY = useSharedValue(0);
 

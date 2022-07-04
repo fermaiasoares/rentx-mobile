@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { database } from '../database';
 import { User } from '../database/models/User';
-import { Q } from '@nozbe/watermelondb';
 
 interface IUser {
     id: string;
@@ -22,10 +21,11 @@ interface SignInCredentials {
 
 interface AuthContextData {
     user: IUser;
-    // loading: boolean;
+    loading: boolean;
+    updateUser: (user: IUser) => Promise<void>;
     error: boolean;
     signIn: (credentials: SignInCredentials) => Promise<void>;
-    // signOut: () => Promise<void>;
+    signOut: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -36,12 +36,12 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
     const [data, setData] = useState<IUser>({} as IUser);
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
     async function signIn({ email, password }: SignInCredentials): Promise<void> {
         try {
-            // setLoading(true);
+            setLoading(true);
             setError(false);
             const response = await api.post('/sessions', {
                 email,
@@ -53,20 +53,52 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             const userCollection = database.get<User>('users');
             await database.write(async () => {
-                await userCollection.create((newUser) => {
+                const userRecord = await userCollection.create((newUser) => {
                     newUser.user_id = user.id;
                     newUser.name = user.name;
                     newUser.email = user.email;
                     newUser.avatar = user.avatar;
                     newUser.driver_license = user.driver_license;
+                    newUser.token = token;
                 })
-            })
 
-            setData({ ...user, token });
+                const userData = userRecord._raw as unknown as IUser;
+                setData(userData);
+            })
         } catch (error) {
             throw new Error();
-            // } finally {
-            //   setLoading(false);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function signOut(): Promise<void> {
+        try {
+            const userCollection = database.get<User>('users');
+            await database.write(async () => {
+                await userCollection.query().destroyAllPermanently();
+                setData({} as User);
+            })
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    async function updateUser(user: IUser): Promise<void> {
+        try {
+            const userCollection = database.get<User>('users');
+            const userSelected = await userCollection.find(data.id);
+
+            await database.write(async () => {
+                await userSelected.update((userData) => {
+                    userData.name = user.name;
+                    userData.driver_license = user.driver_license;
+                    userData.avatar = user.avatar;
+                })
+            })
+            setData(user);
+        } catch (error) {
+            throw new Error(error);
         }
     }
 
@@ -88,9 +120,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     return (
         <AuthContext.Provider value={{
             user: data,
-            // loading,
+            loading,
             error,
-            signIn
+            signIn,
+            signOut,
+            updateUser
         }}>
             {children}
         </AuthContext.Provider>

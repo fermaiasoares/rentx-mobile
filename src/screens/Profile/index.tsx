@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 import { useAuth } from '../../hooks/auth';
 
@@ -25,13 +26,18 @@ import {
 import { BackButton } from '../../components/BackButton';
 import { Input } from '../../components/Input/index';
 import { Button } from '../../components/Button';
+import * as Yup from 'yup';
 
 type IOptions = 'dataEdit' | 'passwordEdit';
 
 export function Profile() {
-    const [option, setOption] = useState<IOptions>('dataEdit');
+    const { user, signOut, updateUser } = useAuth();
 
-    const { user } = useAuth();
+    const [option, setOption] = useState<IOptions>('dataEdit');
+    const [avatar, setAvatar] = useState<string>(user.avatar);
+    const [name, setName] = useState<string>(user.name);
+    const [driverLicense, setDriverLicense] = useState<string>(user.driver_license);
+
     const theme = useTheme();
     const navigation = useNavigation();
 
@@ -43,7 +49,66 @@ export function Profile() {
         setOption(option);
     }
 
-    function handleSignOut() { }
+    async function handleAvatarSelect() {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 4],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            const { uri } = result as { uri: string };
+            setAvatar(uri);
+        }
+    }
+
+    async function handleProfileUpdate() {
+        try {
+            const schema = Yup.object().shape({
+                name: Yup.string().required('Nome é obrigatório'),
+                driverLicense: Yup.string().required('CNH é obrigatório'),
+            })
+            const data = { name, driverLicense };
+            await schema.validate(data);
+
+            await updateUser({
+                id: user.id,
+                user_id: user.user_id,
+                email: user.email,
+                name,
+                driver_license: driverLicense,
+                avatar,
+                token: user.token
+            })
+
+            Alert.alert('Perfil atualizado com sucesso!');
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Yup.ValidationError) {
+                Alert.alert('Opa', error.message);
+            }
+            Alert.alert('Não foi possível atualizar o perfil.');
+        }
+    }
+
+    async function handleSignOut() {
+        Alert.alert(
+            'Tem certeza?',
+            'Se você sair, irá precisar de internet para conectar-se novamente',
+            [
+                {
+                    text: 'Sair',
+                    onPress: () => signOut()
+                },
+                {
+                    text: 'Cancelar',
+                    onPress: () => {},
+                    style: 'cancel'
+                }
+            ]
+        )
+    }
 
     return (
         <KeyboardAvoidingView
@@ -61,8 +126,8 @@ export function Profile() {
                     </HeaderTop>
 
                     <PhotoContainer>
-                        <Photo source={{ uri: 'https://github.com/fermaiasoares.png' }} />
-                        <PhotoButton onPress={() => { }}>
+                        { !!avatar && <Photo source={{ uri: avatar }} /> }
+                        <PhotoButton onPress={handleAvatarSelect}>
                             <Feather name='camera' size={24} color={theme.colors.shape.default} />
                         </PhotoButton>
                     </PhotoContainer>
@@ -83,7 +148,7 @@ export function Profile() {
                             onPress={() => handleOptionChange('passwordEdit')}
                         >
                             <OptionTitle active={option === 'passwordEdit'}>
-                                Troar senha
+                                Trocar senha
                             </OptionTitle>
                         </Option>
                     </Options>
@@ -96,6 +161,7 @@ export function Profile() {
                                         iconName="user"
                                         defaultValue={user.name}
                                         autoCorrect={false}
+                                        onChangeText={setName}
                                     />
                                     <Input
                                         iconName='mail'
@@ -106,6 +172,7 @@ export function Profile() {
                                         iconName='credit-card'
                                         defaultValue={user.driver_license}
                                         keyboardType='numeric'
+                                        onChangeText={setDriverLicense}
                                     />
                                 </Section>
                             )
@@ -136,7 +203,10 @@ export function Profile() {
                             )
                     }
 
-                    <Button title='Aplicar mudanças'/>
+                    <Button
+                        onPress={handleProfileUpdate}
+                        title='Salvar alterações'
+                    />
                 </Content>
             </Container>
             </TouchableWithoutFeedback>

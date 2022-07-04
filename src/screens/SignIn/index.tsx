@@ -26,16 +26,6 @@ export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get('users');
-      const users = await userCollection.query().fetch();
-      console.log(users);
-    }
-
-    loadData();
-  }, [])
-
   function handleNewAccount() {
     navigation.navigate('SignUpFirstStep');
   }
@@ -72,7 +62,6 @@ export function SignIn() {
 
   return (
     <KeyboardAvoidingView
-      behavior='position'
       enabled
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
