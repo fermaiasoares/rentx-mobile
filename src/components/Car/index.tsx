@@ -14,14 +14,14 @@ import {
   Type 
 } from './styles';
 
-import { CarDTO } from '../../dtos/CarDTO';
+import { Car } from '../../database/models/Car';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 interface Props extends RectButtonProps {
-  data: CarDTO;
+  data: Car;
 }
 
-export function Car({ data, ...rest }: Props) {
+export function CarCard({ data, ...rest }: Props) {
   const priceFormatted = data.price.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
